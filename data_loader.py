@@ -9,6 +9,7 @@ TICKERS = ['TSM', 'QCOM', 'SHW']
 START_DATE = "2020-01-01"
 END_DATE = datetime.today().strftime('%Y-%m-%d')
 
+# Fetch and clean historical stock data for a given ticker
 def fetch_stock_data(ticker):
     df = yf.download(ticker, start=START_DATE, end=END_DATE)
     df = df[['Open', 'High', 'Low', 'Close', 'Volume']]
@@ -16,6 +17,7 @@ def fetch_stock_data(ticker):
     df['Ticker'] = ticker
     return df
 
+# Loop through all tickers and collect their historical data
 def fetch_all():
     all_data = {}
     for ticker in TICKERS:
@@ -27,6 +29,7 @@ def fetch_all():
             print(f"Error fetching {ticker}: {e}")
     return all_data
 
+# Run the script: fetch data and display sample output for each ticker
 if __name__ == "__main__":
     data = fetch_all()
     for ticker, df in data.items():
