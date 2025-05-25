@@ -3,6 +3,11 @@ import pandas as pd
 # Adds Buy and Sell signal columns to the DataFrame
 def generate_signals(df):
     df = df.copy()
+    
+    # Ensure required columns exist
+    if 'Current_Holding' not in df.columns:
+        df['Current_Holding'] = 0
+
     df['Buy_Signal'] = False
     df['Sell_Signal'] = False
 
@@ -12,15 +17,7 @@ def generate_signals(df):
         date = df.index[i]
         weekday = date.weekday()  # Monday=0, Friday=4
 
-        # ---- BUY RULES ----
-        is_buy_day = weekday in [0, 2, 4]
-        under_limit = df.get('Current_Holding', pd.Series([0]*len(df))).iloc[i] < cash_limit
-        not_sell_day = not df['Sell_Signal'].iloc[i]
-
-        if is_buy_day and under_limit and not_sell_day:
-            df.loc[date, 'Buy_Signal'] = True
-
-        # ---- SELL RULES ----
+        # SELL RULES
         # Rule 1: Close < HA_100_MA
         rule1 = df['HA_Close'].iloc[i] < df['HA_100_MA'].iloc[i]
 
@@ -29,12 +26,26 @@ def generate_signals(df):
         curr_ma = df['HA_50_MA'].iloc[i]
         rule2 = curr_ma <= prev_ma
 
-        # Combine (ignore MACD for now — coming soon)
-        if rule1 and rule2:
+        # Rule 3: MACD Histogram is negative or decreasing
+        macd_hist_today = df['MACD_Hist'].iloc[i]
+        macd_hist_yesterday = df['MACD_Hist'].iloc[i - 1]
+        rule3 = (macd_hist_today < 0) or (macd_hist_today < macd_hist_yesterday)
+
+        if rule1 and rule2 and rule3:
             df.loc[date, 'Sell_Signal'] = True
+            print(f"[SELL] {date.date()} — Close < HA_100_MA, HA_50_MA not rising, MACD weakening")
+
+        # BUY RULES
+        is_buy_day = weekday in [0, 2, 4]
+        under_limit = df['Current_Holding'].iloc[i] < cash_limit
+        not_sell_day = not df['Sell_Signal'].iloc[i]
+
+        if is_buy_day and under_limit and not_sell_day:
+            df.loc[date, 'Buy_Signal'] = True
 
     return df
 
+# Main Testing
 if __name__ == "__main__":
     df = pd.read_csv("indicators_TSM.csv", index_col=0, parse_dates=True)
     df = generate_signals(df)
