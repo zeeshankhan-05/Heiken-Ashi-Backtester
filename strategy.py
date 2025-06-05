@@ -51,4 +51,4 @@ if __name__ == "__main__":
     df = generate_signals(df)
 
     print(df[['HA_50_MA', 'HA_100_MA', 'MACD_Hist', 'Buy_Signal', 'Sell_Signal']].tail(10))
-    df.to_csv("signals_TSM.csv")
+    df.to_csv("signals_TYL.csv")

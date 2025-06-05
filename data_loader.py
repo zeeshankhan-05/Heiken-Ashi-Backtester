@@ -2,9 +2,9 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 
-TICKERS = ['TSM', 'QCOM', 'SHW']
+TICKERS = ['MPWR, TSCO, TYL']
 
-START_DATE = "2020-01-01"
+START_DATE = "2022-01-01"
 END_DATE = datetime.today().strftime('%Y-%m-%d')
 
 # Fetch and clean historical stock data for a given ticker
