@@ -47,6 +47,7 @@ def generate_signals(df):
 
 # Main Testing
 if __name__ == "__main__":
+    # Update the csv file name for the ticker wanting to test
     df = pd.read_csv("indicators_TSM.csv", index_col=0, parse_dates=True)
     df = generate_signals(df)
 

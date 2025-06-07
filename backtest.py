@@ -110,7 +110,7 @@ def print_summary(ticker, df, trades, initial_cash=100000):
         print(f"Total Profit: ${total_profit:,.2f}")
 
 if __name__ == "__main__":
-    ticker = "MPWR"
+    ticker = "TYL"
     
     try:
         # Load data and run backtest
