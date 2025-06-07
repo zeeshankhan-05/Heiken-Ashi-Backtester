@@ -48,8 +48,8 @@ def generate_signals(df):
 # Main Testing
 if __name__ == "__main__":
     # Update the csv file name for the ticker wanting to test
-    df = pd.read_csv("indicators_TSM.csv", index_col=0, parse_dates=True)
+    df = pd.read_csv("indicators_TSCO.csv", index_col=0, parse_dates=True)
     df = generate_signals(df)
 
     print(df[['HA_50_MA', 'HA_100_MA', 'MACD_Hist', 'Buy_Signal', 'Sell_Signal']].tail(10))
-    df.to_csv("signals_TYL.csv")
+    df.to_csv("signals_TSCO.csv")
