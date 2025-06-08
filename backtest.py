@@ -81,17 +81,40 @@ def backtest_strategy(df, ticker, initial_cash=100000):
             trades.append({
                 'Type': 'Final Sell',
                 'Date': df.index[-1],
-                'Price': last_price,  # Standard Close price
+                'Price': last_price,
                 'Shares': position,
                 'Cash_After': cash,
                 'Profit': profit
             })
             
-            print(f"FINAL SELL: {df.index[-1].date()} - {position} shares at ${last_price:.2f}")
+            print(f"FINAL SELL: {df.index[-1].date()} - {position} shares at ${last_price:.2f} (Final Liquidation)")
             
+            # Update the final row with liquidated values
             df.loc[df.index[-1], 'Cash'] = cash
             df.loc[df.index[-1], 'Holdings'] = 0
             df.loc[df.index[-1], 'Total_Value'] = cash
+            
+            # Reset position tracking
+            position = 0
+            entry_price = 0
+        else:
+            print(f"WARNING: Cannot liquidate position - final price is NaN")
+            # If unable to get a valid price, mark holdings at 0 value
+            df.loc[df.index[-1], 'Holdings'] = 0
+            df.loc[df.index[-1], 'Total_Value'] = cash
+
+    # Final liquidation summary
+    print(f"\n=== FINAL LIQUIDATION SUMMARY ===")
+    if position == 0:
+        print("All positions successfully liquidated")
+        print(f"Final cash balance: ${cash:,.2f}")
+    else:
+        print(f"WARNING: {position} shares remain unliquidated")
+        print(f"Final cash balance: ${cash:,.2f}")
+        if not pd.isna(df['Close'].iloc[-1]):
+            print(f"Estimated holding value: ${position * df['Close'].iloc[-1]:,.2f}")
+        else:
+            print("Cannot estimate holding value - final price is NaN")
     
     return df, trades
 
@@ -164,7 +187,7 @@ def print_summary(ticker, df, trades, initial_cash=100000):
             print(f"{trade['Date'].strftime('%Y-%m-%d'):<12} {trade['Type']:<10} ${trade['Price']:<7.2f} {trade['Shares']:<8} {profit_str:<10}")
 
 if __name__ == "__main__":
-    ticker = "TSCO"
+    ticker = "TYL"
     
     try:
         df = pd.read_csv(f"signals_{ticker}.csv", index_col=0, parse_dates=True)
