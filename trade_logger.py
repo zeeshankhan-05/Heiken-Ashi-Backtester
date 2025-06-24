@@ -58,6 +58,7 @@ def create_detailed_trade_log(trades, ticker, initial_cash=100000):
                 # Determine if trade was profitable
                 trade_result = "Win" if gross_profit > 0 else "Loss" if gross_profit < 0 else "Break-even"
                 
+                # TODO: Remove JSON
                 trade_entry = {
                     'Trade_Number': trade_number,
                     'Ticker': ticker,
@@ -345,7 +346,7 @@ def run_complete_trade_analysis(ticker, initial_cash=100000):
         return None, None
 
 if __name__ == "__main__":
-    test_tickers = ['TYL', 'TSCO', 'MPWR']
+    test_tickers = ['TSM', 'QCOM', 'SPGI', 'TJX', 'ADI', 'WM', 'MCK', 'SHW', 'RSG', 'TEAM', 'FICO', 'RMD', 'MPWR', 'TSCO', 'TYL', 'EME', 'JBHT', 'MANH', 'SAIA', 'FSS', 'UFPT', 'WS', 'WTTR', 'VMD']
     
     print("🚀 Starting comprehensive trade log analysis...")
     print("="*60)

@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 
-TICKERS = ['MPWR', 'TSCO', 'TYL']
+TICKERS = ['TSM', 'QCOM', 'SPGI', 'TJX', 'ADI', 'WM', 'MCK', 'SHW', 'RSG', 'TEAM', 'FICO', 'RMD', 'MPWR', 'TSCO', 'TYL', 'EME', 'JBHT', 'MANH', 'SAIA', 'FSS', 'UFPT', 'WS', 'WTTR', 'VMD']
 
 START_DATE = "2022-01-01"
 END_DATE = datetime.today().strftime('%Y-%m-%d')

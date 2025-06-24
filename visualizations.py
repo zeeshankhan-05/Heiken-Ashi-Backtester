@@ -4,6 +4,8 @@ import matplotlib.dates as mdates
 from datetime import datetime
 import numpy as np
 
+# TODO: Seperate all 4 graphs into their own plots and create a folder for each ticker and their visualizations
+
 def create_backtest_visualizations(ticker, save_plots=True):
     """
     Create comprehensive visualizations for backtest results:

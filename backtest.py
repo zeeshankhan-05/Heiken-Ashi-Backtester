@@ -27,7 +27,10 @@ def backtest_strategy(df, ticker, initial_cash=100000):
         
         # Buy signal - invest $10,000 if not holding
         if df['Buy_Signal'].iloc[i] and position == 0:
-            shares_to_buy = int(10000 // trade_price)
+            # TODO: Assume $10,000 investment total for all shares (make appropriate changes)
+                # initial_cash = 10,000
+                # shares_to_buy = 1 (always)
+            shares_to_buy = int(10000 // trade_price) 
             cost = shares_to_buy * trade_price
             
             if cash >= cost and shares_to_buy > 0:
